@@ -7,3 +7,5 @@
 /build
 /captures
 .externalNativeBuild
+/openCVTutorial1CameraPreview/build/**
+/OpenCV/build/**
