@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<instant-run
+    abi="armeabi-v7a,armeabi"
+    api-level="23"
+    density="xxhdpi"
+    format="8"
+    plugin-version="2.2.3"
+    timestamp="181905364211676"
+    token="2384293134362447287"
+    verifier="COLD_SWAP_REQUESTED" >
+
+    <task
+        name="javac"
+        duration="77" />
+    <task
+        name="instant-run-dex"
+        duration="0" />
+    <task
+        name="instant-run-transform"
+        duration="17" />
+    <task
+        name="verifier"
+        duration="87" />
+
+    <artifact
+        location="/home/evan/resources/aruco_test/Aruco-Marker-Tracking-Android/openCVTutorial1CameraPreview/build/intermediates/transforms/dex/debug/folders/1000/5/slice_7/classes.dex"
+        type="DEX" />
+
+    <build
+        timestamp="181408371813755"
+        verifier="MANIFEST_FILE_CHANGE" >
+        <artifact
+            location="/home/evan/resources/aruco_test/Aruco-Marker-Tracking-Android/openCVTutorial1CameraPreview/build/outputs/apk/openCVTutorial1CameraPreview-debug.apk"
+            type="MAIN" />
+    </build>
+    <build
+        timestamp="181905364211676"
+        verifier="COLD_SWAP_REQUESTED" >
+        <artifact
+            location="/home/evan/resources/aruco_test/Aruco-Marker-Tracking-Android/openCVTutorial1CameraPreview/build/intermediates/transforms/dex/debug/folders/1000/5/slice_7/classes.dex"
+            type="DEX" />
+    </build>
+
+</instant-run>

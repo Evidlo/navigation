@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="true"
+        jar="/home/evan/resources/aruco_test/Aruco-Marker-Tracking-Android/openCVTutorial1CameraPreview/build/intermediates/exploded-aar/com.android.support/support-vector-drawable/23.4.0/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.3"
+        sha1="c2c594cace5d83a3227b2b6e658ecbfd586d3ed9">
+        <dex dex="/home/evan/resources/aruco_test/Aruco-Marker-Tracking-Android/openCVTutorial1CameraPreview/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-vector-drawable-23.4.0_53ff185c6f4948d05ec10b6e204c276a5c1af6c4/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/evan/resources/aruco_test/Aruco-Marker-Tracking-Android/openCVTutorial1CameraPreview/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.4.0/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.3"
+        sha1="548f06de403a9409f00554b3ee12a9fdea0e236c">
+        <dex dex="/home/evan/resources/aruco_test/Aruco-Marker-Tracking-Android/openCVTutorial1CameraPreview/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-appcompat-v7-23.4.0_853e0765be6a9db94df3e35ce104491dafacb32e/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/evan/resources/aruco_test/Aruco-Marker-Tracking-Android/openCVTutorial1CameraPreview/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.3"
+        sha1="f464816609d6d3af286e7fbeff1fa5313a8178d3">
+        <dex dex="/home/evan/resources/aruco_test/Aruco-Marker-Tracking-Android/openCVTutorial1CameraPreview/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_66255cfcd88fbacf47a0a34e1314b5001bd27d7a/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/evan/resources/aruco_test/Aruco-Marker-Tracking-Android/openCVTutorial1CameraPreview/build/intermediates/exploded-aar/com.android.support/support-v4/23.4.0/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.3"
+        sha1="67bd36ee9340ec7c254108936ad16b24bed160cc">
+        <dex dex="/home/evan/resources/aruco_test/Aruco-Marker-Tracking-Android/openCVTutorial1CameraPreview/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-v4-23.4.0_be468621fe184790e703207fb6a58786cdaaad32/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/evan/resources/aruco_test/Aruco-Marker-Tracking-Android/openCVTutorial1CameraPreview/build/intermediates/exploded-aar/com.android.support/animated-vector-drawable/23.4.0/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.3"
+        sha1="de4db3785756bfb0915a9f59a9b3f2fea7407be4">
+        <dex dex="/home/evan/resources/aruco_test/Aruco-Marker-Tracking-Android/openCVTutorial1CameraPreview/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-animated-vector-drawable-23.4.0_880f35c00c7ec83317aa0ee41a6cb33a930d1a9e/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/evan/resources/aruco_test/Aruco-Marker-Tracking-Android/openCVTutorial1CameraPreview/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.3"
+        sha1="60660a06309eda9b63038d12f9cf1ce25a9c8481">
+        <dex dex="/home/evan/resources/aruco_test/Aruco-Marker-Tracking-Android/openCVTutorial1CameraPreview/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_888d354f0e84d576a89a79978a59019a9adf3286/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/evan/resources/aruco_test/Aruco-Marker-Tracking-Android/openCVTutorial1CameraPreview/build/intermediates/exploded-aar/com.android.support/support-v4/23.4.0/jars/libs/internal_impl-23.4.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.3"
+        sha1="ea3c07504d2c8f4b13aa17c45c1b68ed9c1c3674">
+        <dex dex="/home/evan/resources/aruco_test/Aruco-Marker-Tracking-Android/openCVTutorial1CameraPreview/build/intermediates/transforms/dex/debug/folders/1000/10/internal_impl-23.4.0_d735c51ec9f34b30250336389ee5d6ba76cfb3be/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/evan/Android/Sdk/extras/android/m2repository/com/android/support/support-annotations/23.4.0/support-annotations-23.4.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.3"
+        sha1="ffbe55fdb2bb456b1485831706a9eac3300bb6b8">
+        <dex dex="/home/evan/resources/aruco_test/Aruco-Marker-Tracking-Android/openCVTutorial1CameraPreview/build/intermediates/transforms/dex/debug/folders/1000/10/support-annotations-23.4.0_9ae140154691b9e3f79e3151fab5dab086083608/classes.dex" />
+    </item>
+
+</items>

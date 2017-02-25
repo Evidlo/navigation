@@ -1,0 +1,7 @@
+#Sat Feb 25 14:34:11 EST 2017
+base.0=/home/evan/resources/aruco_test/Aruco-Marker-Tracking-Android/openCVTutorial1CameraPreview/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_888d354f0e84d576a89a79978a59019a9adf3286
+renamed.1=classes.dex
+renamed.0=classes2.dex
+file.1=/home/evan/resources/aruco_test/Aruco-Marker-Tracking-Android/openCVTutorial1CameraPreview/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_66255cfcd88fbacf47a0a34e1314b5001bd27d7a/classes.dex
+base.1=/home/evan/resources/aruco_test/Aruco-Marker-Tracking-Android/openCVTutorial1CameraPreview/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_66255cfcd88fbacf47a0a34e1314b5001bd27d7a
+file.0=/home/evan/resources/aruco_test/Aruco-Marker-Tracking-Android/openCVTutorial1CameraPreview/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_888d354f0e84d576a89a79978a59019a9adf3286/classes.dex
