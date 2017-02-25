@@ -41,7 +41,7 @@ public class MarkerTracker extends Activity implements CvCameraViewListener2 {
 
     //Constants
     private static final String TAG = "Aruco";
-    private static final float MARKER_SIZE = (float) 0.017;
+    private static final float MARKER_SIZE = (float) 0.2;
 
     //Preferences
     private static final boolean SHOW_MARKERID = false;

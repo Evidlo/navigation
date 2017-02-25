@@ -65,6 +65,7 @@ public class JavaCameraView extends CameraBridgeViewBase implements PreviewCallb
     }
 
     protected boolean initializeCamera(int width, int height) {
+        setMaxFrameSize(1000, 1000);
         Log.d(TAG, "Initialize java camera");
         boolean result = true;
         synchronized (this) {
