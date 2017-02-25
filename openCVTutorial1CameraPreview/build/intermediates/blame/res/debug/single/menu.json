@@ -1,5 +1,9 @@
 [
     {
+        "merged": "/home/evan/resources/navigation/openCVTutorial1CameraPreview/build/intermediates/res/merged/debug/menu/calibration.xml",
+        "source": "/home/evan/resources/navigation/openCVTutorial1CameraPreview/src/main/res/menu/calibration.xml"
+    },
+    {
         "merged": "/home/evan/resources/aruco_test/Aruco-Marker-Tracking-Android/openCVTutorial1CameraPreview/build/intermediates/res/merged/debug/menu/calibration.xml",
         "source": "/home/evan/resources/aruco_test/Aruco-Marker-Tracking-Android/openCVTutorial1CameraPreview/src/main/res/menu/calibration.xml"
     }

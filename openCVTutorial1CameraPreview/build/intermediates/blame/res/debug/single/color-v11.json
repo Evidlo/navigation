@@ -4,7 +4,15 @@
         "source": "/home/evan/resources/aruco_test/Aruco-Marker-Tracking-Android/openCVTutorial1CameraPreview/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.4.0/res/color-v11/abc_background_cache_hint_selector_material_light.xml"
     },
     {
+        "merged": "/home/evan/resources/navigation/openCVTutorial1CameraPreview/build/intermediates/res/merged/debug/color-v11/abc_background_cache_hint_selector_material_dark.xml",
+        "source": "/home/evan/resources/navigation/openCVTutorial1CameraPreview/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.4.0/res/color-v11/abc_background_cache_hint_selector_material_dark.xml"
+    },
+    {
         "merged": "/home/evan/resources/aruco_test/Aruco-Marker-Tracking-Android/openCVTutorial1CameraPreview/build/intermediates/res/merged/debug/color-v11/abc_background_cache_hint_selector_material_dark.xml",
         "source": "/home/evan/resources/aruco_test/Aruco-Marker-Tracking-Android/openCVTutorial1CameraPreview/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.4.0/res/color-v11/abc_background_cache_hint_selector_material_dark.xml"
+    },
+    {
+        "merged": "/home/evan/resources/navigation/openCVTutorial1CameraPreview/build/intermediates/res/merged/debug/color-v11/abc_background_cache_hint_selector_material_light.xml",
+        "source": "/home/evan/resources/navigation/openCVTutorial1CameraPreview/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.4.0/res/color-v11/abc_background_cache_hint_selector_material_light.xml"
     }
 ]

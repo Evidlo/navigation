@@ -11,11 +11,13 @@ package calibration;// This sample is based on "Camera calibration With OpenCV" 
 // When you've captured necessary amount of pattern corners (usually ~20 are enough),
 // press "Calibrate" button for performing camera calibration.
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -33,6 +35,7 @@ import org.opencv.android.CameraBridgeViewBase.CvCameraViewListener2;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
 import org.opencv.core.Mat;
+import org.opencv.samples.tutorial1.MarkerTracker;
 import org.opencv.samples.tutorial1.R;
 
 public class CameraCalibrationActivity extends Activity implements CvCameraViewListener2, OnTouchListener {
@@ -74,6 +77,10 @@ public class CameraCalibrationActivity extends Activity implements CvCameraViewL
         Log.i(TAG, "called onCreate");
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        ActivityCompat.requestPermissions(CameraCalibrationActivity.this, new String[] {
+                Manifest.permission.CAMERA,
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
 
         setContentView(R.layout.camera_calibration_surface_view);
 

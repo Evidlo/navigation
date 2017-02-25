@@ -22,9 +22,11 @@ import es.ava.aruco.MarkerDetector;
 import es.ava.aruco.Marker;
 import es.ava.aruco.Utils;
 
+import android.Manifest;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -78,6 +80,12 @@ public class MarkerTracker extends Activity implements CvCameraViewListener2 {
     public void onCreate(Bundle savedInstanceState) {
         Log.i(TAG, "called onCreate");
         super.onCreate(savedInstanceState);
+
+        ActivityCompat.requestPermissions(MarkerTracker.this, new String[] {
+                Manifest.permission.CAMERA,
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
