@@ -26,6 +26,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Environment;
+import android.speech.tts.TextToSpeech;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.Menu;
@@ -35,9 +36,13 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Vector;
+import android.speech.tts.TextToSpeech;
 
 public class MarkerTracker extends Activity implements CvCameraViewListener2 {
+
+    TextToSpeech tts;
 
     //Constants
     private static final String TAG = "Aruco";
@@ -87,6 +92,23 @@ public class MarkerTracker extends Activity implements CvCameraViewListener2 {
         Log.i(TAG, "called onCreate");
         super.onCreate(savedInstanceState);
 
+        tts = new TextToSpeech(MarkerTracker.this, new TextToSpeech.OnInitListener() {
+
+            @Override
+            public void onInit(int status) {
+                // TODO Auto-generated method stub
+                if(status == TextToSpeech.SUCCESS){
+                    int result=tts.setLanguage(Locale.US);
+                    if(result==TextToSpeech.LANG_MISSING_DATA ||
+                            result==TextToSpeech.LANG_NOT_SUPPORTED){
+                        Log.e("error", "This Language is not supported");
+                    }
+                }
+                else
+                    Log.e("error", "Initilization Failed!");
+            }
+        });
+
         ActivityCompat.requestPermissions(MarkerTracker.this, new String[] {
                 Manifest.permission.CAMERA,
                 Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -103,6 +125,7 @@ public class MarkerTracker extends Activity implements CvCameraViewListener2 {
 
         mOpenCvCameraView.setCvCameraViewListener(this);
 
+        ConvertTextToSpeech("mah fam");
 
 
     }
@@ -113,6 +136,12 @@ public class MarkerTracker extends Activity implements CvCameraViewListener2 {
         super.onPause();
         if (mOpenCvCameraView != null)
             mOpenCvCameraView.disableView();
+
+/*        if(tts != null){
+
+            tts.stop();
+            tts.shutdown();
+        } */
     }
 
     @Override
@@ -140,7 +169,7 @@ public class MarkerTracker extends Activity implements CvCameraViewListener2 {
     public void onCameraViewStopped() {
     }
 
-    public String readLandmark(Landmark loc){
+    public void readLandmark(Landmark loc){
 
         String leftright;
         String updown;
@@ -165,7 +194,7 @@ public class MarkerTracker extends Activity implements CvCameraViewListener2 {
 
         String direct = "The " + field.getClosest(loc).getLandmarkName() + " is " + updown + " and to the " + leftright + ".";
 
-        return("You are passing the " + LocationName + ". This " + LocationDescription + ". " + direct);
+        ConvertTextToSpeech("You are passing the " + LocationName + ". This " + LocationDescription + ". " + direct);
 
 
     }
@@ -207,7 +236,7 @@ public class MarkerTracker extends Activity implements CvCameraViewListener2 {
 
                 for (int j = 0; j < locations.length ; j++) {
                     if(detectedMarkers.get(i).getMarkerId() == locations[j].getLandmarkID()) {
-                        Core.putText(rgba, readLandmark(locations[j]), pts.get(0), Core.FONT_HERSHEY_SIMPLEX, 2, new Scalar(0, 0, 1));
+                        readLandmark(locations[j]);
                     }
                     }
                 }
@@ -217,5 +246,16 @@ public class MarkerTracker extends Activity implements CvCameraViewListener2 {
         }
 
         return rgba;
+    }
+
+    private void ConvertTextToSpeech(String text) {
+        // TODO Auto-generated method stub
+        //text = et.getText().toString();
+        if(text == null||"".equals(text))
+        {
+            text = "Content not available";
+            tts.speak(text, TextToSpeech.QUEUE_FLUSH, null);
+        }else
+            tts.speak(text, TextToSpeech.QUEUE_FLUSH, null);
     }
 }

@@ -34,7 +34,7 @@ public class Map {
     // I may have done the following incorrectly, not sure how to redefine the closest variable every time it
 // finds the smallest distance
     public Landmark getClosest(Landmark current){
-        int closeval = 0;
+        int closeval = 10000;
         Landmark closest = new Landmark(1, "Error", "Error ", 0,0,0);
         for(int i = 0; i < elements.length; i++){
             if(findDistance(current, elements[i]) <= closeval && findDistance(current, elements[i]) != 0){
