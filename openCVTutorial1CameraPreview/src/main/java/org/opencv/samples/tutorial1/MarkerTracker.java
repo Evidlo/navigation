@@ -39,6 +39,8 @@ import android.view.WindowManager;
 import java.util.List;
 import java.util.Locale;
 import java.util.Vector;
+import android.content.Intent;
+import android.net.Uri;
 
 
 public class MarkerTracker extends Activity implements CvCameraViewListener2, SensorEventListener {
@@ -72,6 +74,8 @@ public class MarkerTracker extends Activity implements CvCameraViewListener2, Se
 
     private Map field = new Map(locations);
 
+    Intent phoneintent = new Intent(Intent.ACTION_CALL);
+
     private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
         public void onManagerConnected(int status) {
@@ -89,6 +93,14 @@ public class MarkerTracker extends Activity implements CvCameraViewListener2, Se
         }
     };
 
+    public void callNumber(String number) {
+        phoneintent.setData(Uri.parse(number));
+        startActivity(phoneintent);
+
+        finish();
+        System.exit(0);
+    }
+
 
     public MarkerTracker() {
         Log.i(TAG, "Instantiated new " + this.getClass());
@@ -101,7 +113,6 @@ public class MarkerTracker extends Activity implements CvCameraViewListener2, Se
         Log.i(TAG, "called onCreate");
         super.onCreate(savedInstanceState);
 
-        System.out.println("HELLO");
         mSensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
         mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         mMagnetometer = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
@@ -126,6 +137,7 @@ public class MarkerTracker extends Activity implements CvCameraViewListener2, Se
                 Manifest.permission.CAMERA,
                 Manifest.permission.READ_EXTERNAL_STORAGE,
                 Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.CALL_PHONE,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
 
 
@@ -189,6 +201,9 @@ public class MarkerTracker extends Activity implements CvCameraViewListener2, Se
 
         int[] vel = field.getDirections(loc, field.getClosest(loc));
 
+        if(loc.getLandmarkID() == 303) {
+            callNumber("tel:1-513-237-8467");
+        }
 
 
         if (onLandmark_enabled){

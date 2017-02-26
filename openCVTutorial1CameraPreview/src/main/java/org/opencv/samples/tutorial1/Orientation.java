@@ -9,21 +9,26 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
+import android.util.Log;
+
+
 
 public class Orientation extends Activity implements SensorEventListener {
         private final SensorManager mSensorManager;
         private final Sensor mAccelerometer;
+        private static final String TAG = "Aruco";
 
-        float azimut = 0;
+    float azimuth = 0;
 
 
         public Orientation() {
             mSensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
-            mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+            mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
+            Log.i("lkj","lkj");
 
         }
 
-        public float getDirection() {return azimut; }
+        public float getDirection() {return azimuth; }
 
         protected void onResume() {
             super.onResume();
@@ -39,8 +44,9 @@ public class Orientation extends Activity implements SensorEventListener {
         }
 
         public void onSensorChanged(SensorEvent event) {
-            azimut = -event.values[0] * 360 / (2 * 3.14159f);
+            azimuth = -event.values[0] * 360 / (2 * 3.14159f);
+            System.out.println(azimuth);
+            Log.i(TAG, "got sensor reading");
         }
 
-    }
 }
