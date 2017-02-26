@@ -24,6 +24,7 @@ import es.ava.aruco.Utils;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.speech.tts.TextToSpeech;
@@ -38,7 +39,11 @@ import android.widget.Toast;
 import java.util.List;
 import java.util.Locale;
 import java.util.Vector;
+
 import android.speech.tts.TextToSpeech;
+
+import android.hardware.GeomagneticField;
+
 
 public class MarkerTracker extends Activity implements CvCameraViewListener2 {
 
@@ -56,12 +61,12 @@ public class MarkerTracker extends Activity implements CvCameraViewListener2 {
     private static final String DATA_FILEPATH = "/foo2";
 
     private CameraBridgeViewBase mOpenCvCameraView;
-    private boolean              mIsJavaCamera = true;
-    private MenuItem             mItemSwitchCamera = null;
+    private boolean mIsJavaCamera = true;
+    private MenuItem mItemSwitchCamera = null;
     private Landmark[] locations = {new Landmark(213, "1", "First Checkpoint", 1, 1, 1),
-                                    new Landmark(265, "2", "Second Checkpoint", 1, 2, 1),
-                                    new Landmark(341, "3", "Third Checkpoint", 2, 1, 1),
-                                    new Landmark(303, "4", "Fourth Checkpoint", 2, 2, 1)};
+            new Landmark(265, "2", "Second Checkpoint", 1, 2, 1),
+            new Landmark(341, "3", "Third Checkpoint", 2, 1, 1),
+            new Landmark(303, "4", "Fourth Checkpoint", 2, 2, 1)};
 
     private Map field = new Map(locations);
 
@@ -69,15 +74,15 @@ public class MarkerTracker extends Activity implements CvCameraViewListener2 {
         @Override
         public void onManagerConnected(int status) {
             switch (status) {
-                case LoaderCallbackInterface.SUCCESS:
-                {
+                case LoaderCallbackInterface.SUCCESS: {
                     Log.i(TAG, "OpenCV loaded successfully");
                     mOpenCvCameraView.enableView();
-                } break;
-                default:
-                {
+                }
+                break;
+                default: {
                     super.onManagerConnected(status);
-                } break;
+                }
+                break;
             }
         }
     };
@@ -92,24 +97,25 @@ public class MarkerTracker extends Activity implements CvCameraViewListener2 {
         Log.i(TAG, "called onCreate");
         super.onCreate(savedInstanceState);
 
+
+
         tts = new TextToSpeech(MarkerTracker.this, new TextToSpeech.OnInitListener() {
 
             @Override
             public void onInit(int status) {
                 // TODO Auto-generated method stub
-                if(status == TextToSpeech.SUCCESS){
-                    int result=tts.setLanguage(Locale.US);
-                    if(result==TextToSpeech.LANG_MISSING_DATA ||
-                            result==TextToSpeech.LANG_NOT_SUPPORTED){
+                if (status == TextToSpeech.SUCCESS) {
+                    int result = tts.setLanguage(Locale.US);
+                    if (result == TextToSpeech.LANG_MISSING_DATA ||
+                            result == TextToSpeech.LANG_NOT_SUPPORTED) {
                         Log.e("error", "This Language is not supported");
                     }
-                }
-                else
+                } else
                     Log.e("error", "Initilization Failed!");
             }
         });
 
-        ActivityCompat.requestPermissions(MarkerTracker.this, new String[] {
+        ActivityCompat.requestPermissions(MarkerTracker.this, new String[]{
                 Manifest.permission.CAMERA,
                 Manifest.permission.READ_EXTERNAL_STORAGE,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
@@ -124,9 +130,6 @@ public class MarkerTracker extends Activity implements CvCameraViewListener2 {
         mOpenCvCameraView.setVisibility(SurfaceView.VISIBLE);
 
         mOpenCvCameraView.setCvCameraViewListener(this);
-
-        ConvertTextToSpeech("mah fam");
-
 
     }
 
