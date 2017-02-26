@@ -65,10 +65,10 @@ public class MarkerTracker extends Activity implements CvCameraViewListener2, Se
     private static final String DATA_FILEPATH = "/foo2";
 
     private CameraBridgeViewBase mOpenCvCameraView;
-    private Landmark[] locations = {new Landmark(213, "Kitchen", "go down the hallway and turn right to get to the bathroom", "testing", "Testing","oijij"),
-                                    new Landmark(265, "Bathroom", "gorbachev bleep boop", "hihihi", "nonon", "dont go that way"),
-                                    new Landmark(341, "Garage", "this way leads to certain death", "donuts are here", "run away", "doggo"),
-                                    new Landmark(303, "Bedroom", "meepmorp", "wejfijef", "123123", "lkjlkj")};
+    private Landmark[] locations = {new Landmark(213, "Elevator", "The bathroom is further down the hall", "The bathroom is further down the hall", "The bathroom is further down the hall","The bathroom is further down the hall"),
+                                    new Landmark(265, "Bathroom", "There is food to left of here", "There is food to left of here", "There is food to left of here", "There is food to left of here"),
+                                    new Landmark(341, "Hallway", "This is dangerous. Please don't go this way.", "This is dangerous. Please don't go this way.", "This is dangerous. Please don't go this way.", "This is dangerous. Please don't go this way."),
+                                    new Landmark(303, "Food", "You have arrived at food", "You have arrived at food", "You have arrived at food", "You have arrived at food")};
 
 
     private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
