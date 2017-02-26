@@ -10,21 +10,21 @@ import org.opencv.core.Mat;
 import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewListener2;
 import org.opencv.core.MatOfPoint2f;
-import org.opencv.core.MatOfPoint3;
 import org.opencv.core.MatOfPoint3f;
 import org.opencv.core.Point;
 import org.opencv.core.Point3;
 import org.opencv.core.Scalar;
-import org.opencv.core.Size;
 
 import es.ava.aruco.CameraParameters;
 import es.ava.aruco.MarkerDetector;
 import es.ava.aruco.Marker;
-import es.ava.aruco.Utils;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.pm.PackageManager;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Environment;
 import java.util.TimerTask;
@@ -32,22 +32,16 @@ import java.util.Timer;
 import android.speech.tts.TextToSpeech;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SurfaceView;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 import java.util.List;
 import java.util.Locale;
 import java.util.Vector;
 
-import android.speech.tts.TextToSpeech;
 
-import android.hardware.GeomagneticField;
-
-
-public class MarkerTracker extends Activity implements CvCameraViewListener2 {
+public class MarkerTracker extends Activity implements CvCameraViewListener2, SensorEventListener {
 
     TextToSpeech tts;
 
@@ -98,6 +92,7 @@ public class MarkerTracker extends Activity implements CvCameraViewListener2 {
 
     public MarkerTracker() {
         Log.i(TAG, "Instantiated new " + this.getClass());
+
     }
 
     /** Called when the activity is first created. */
@@ -106,7 +101,10 @@ public class MarkerTracker extends Activity implements CvCameraViewListener2 {
         Log.i(TAG, "called onCreate");
         super.onCreate(savedInstanceState);
 
-
+        System.out.println("HELLO");
+        mSensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
+        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        mMagnetometer = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
 
         tts = new TextToSpeech(MarkerTracker.this, new TextToSpeech.OnInitListener() {
 
@@ -127,6 +125,7 @@ public class MarkerTracker extends Activity implements CvCameraViewListener2 {
         ActivityCompat.requestPermissions(MarkerTracker.this, new String[]{
                 Manifest.permission.CAMERA,
                 Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
 
 
@@ -148,12 +147,8 @@ public class MarkerTracker extends Activity implements CvCameraViewListener2 {
         super.onPause();
         if (mOpenCvCameraView != null)
             mOpenCvCameraView.disableView();
+        mSensorManager.unregisterListener(this);
 
-/*        if(tts != null){
-
-            tts.stop();
-            tts.shutdown();
-        } */
     }
 
     @Override
@@ -167,6 +162,10 @@ public class MarkerTracker extends Activity implements CvCameraViewListener2 {
             Log.d(TAG, "OpenCV library found inside package. Using it!");
             mLoaderCallback.onManagerConnected(LoaderCallbackInterface.SUCCESS);
         }
+        mSensorManager.registerListener(this, mAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+        mSensorManager.registerListener(this, mMagnetometer, SensorManager.SENSOR_DELAY_UI);
+
+
     }
 
     public void onDestroy() {
@@ -288,5 +287,44 @@ public class MarkerTracker extends Activity implements CvCameraViewListener2 {
             tts.speak(text, TextToSpeech.QUEUE_FLUSH, null);
         }else
             tts.speak(text, TextToSpeech.QUEUE_FLUSH, null);
+    }
+
+    private SensorManager mSensorManager;
+    private Sensor mAccelerometer;
+    private Sensor mMagnetometer;
+
+
+    float azimuth = 0;
+
+    public float getDirection() {return azimuth; }
+
+
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+    }
+
+    float[] mGravity;
+    float[] mGeomagnetic;
+    public void onSensorChanged(SensorEvent event) {
+        if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER){
+            mGravity = event.values;
+        }
+
+        if (event.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD){
+            mGeomagnetic = event.values;
+
+        }
+        if (mGravity != null && mGeomagnetic != null) {
+            float R[] = new float[9];
+            float I[] = new float[9];
+            boolean success = SensorManager.getRotationMatrix(R, I, mGravity, mGeomagnetic);
+            if (success) {
+                float orientation[] = new float[3];
+                SensorManager.getOrientation(R, orientation);
+                azimuth = orientation[0]; // orientation contains: azimut, pitch and roll
+                float rotation = -azimuth * 360 / (2 * 3.14159f);
+
+                Log.i("compass", Float.toString(rotation));
+            }
+        }
     }
 }
