@@ -27,6 +27,8 @@ import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
+import java.util.TimerTask;
+import java.util.Timer;
 import android.speech.tts.TextToSpeech;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
@@ -52,9 +54,15 @@ public class MarkerTracker extends Activity implements CvCameraViewListener2 {
     //Constants
     private static final String TAG = "Aruco";
     private static final float MARKER_SIZE = (float) 0.2;
+    private boolean onLandmark_enabled = true;
 
     //Preferences
     private static final boolean SHOW_MARKERID = true;
+
+    public Timer timer = new Timer();
+    public TimerTask timer_task;
+    public boolean timer_running = false;
+
 
     //You must run a calibration prior to detection
     // The activity to run calibration is provided in the repository
@@ -86,6 +94,7 @@ public class MarkerTracker extends Activity implements CvCameraViewListener2 {
             }
         }
     };
+
 
     public MarkerTracker() {
         Log.i(TAG, "Instantiated new " + this.getClass());
@@ -172,7 +181,7 @@ public class MarkerTracker extends Activity implements CvCameraViewListener2 {
     public void onCameraViewStopped() {
     }
 
-    public void readLandmark(Landmark loc){
+    public void onLandmark(Landmark loc){
 
         String leftright;
         String updown;
@@ -181,23 +190,43 @@ public class MarkerTracker extends Activity implements CvCameraViewListener2 {
 
         int[] vel = field.getDirections(loc, field.getClosest(loc));
 
-        if (vel[1] > 0) {
-            updown = "down the hall";
-        }else{
-            updown = "behind you";
-            vel[0] = vel[0]*(-1);
+
+
+        if (onLandmark_enabled){
+            if (vel[1] > 0) {
+                updown = "down the hall";
+            }else{
+                updown = "behind you";
+                vel[0] = vel[0]*(-1);
+
+            }
+            if (vel[0] > 0) {
+                leftright = "right";
+            }else{
+                leftright = "left";
+            }
+
+
+            String direct = "The " + field.getClosest(loc).getLandmarkName() + " is " + updown + " and to the " + leftright + ".";
+
+            ConvertTextToSpeech("You are passing the " + LocationName + ". This " + LocationDescription + ". " + direct);
 
         }
-        if (vel[0] > 0) {
-            leftright = "right";
-        }else{
-            leftright = "left";
+
+        // rate limit landmark detection
+        onLandmark_enabled = false;
+        if (timer_running){
+            timer_task.cancel();
         }
+        timer_task = new TimerTask() {
+            public void run() {
+                Log.i(TAG, "sasquatch");
+                onLandmark_enabled = true;
+            }
+        };
+        timer_running = true;
+        timer.schedule(timer_task, 5000);
 
-
-        String direct = "The " + field.getClosest(loc).getLandmarkName() + " is " + updown + " and to the " + leftright + ".";
-
-        ConvertTextToSpeech("You are passing the " + LocationName + ". This " + LocationDescription + ". " + direct);
 
 
     }
@@ -234,20 +263,19 @@ public class MarkerTracker extends Activity implements CvCameraViewListener2 {
                     List<Point> pts = new Vector<>();
                     pts = outputPoints.toList();
 
-                    //Draw id number
+                    // Draw id number
                     Core.putText(rgba, Integer.toString(idValue), pts.get(0), Core.FONT_HERSHEY_SIMPLEX, 2, new Scalar(0,0,1));
 
                 for (int j = 0; j < locations.length ; j++) {
                     if(detectedMarkers.get(i).getMarkerId() == locations[j].getLandmarkID()) {
-                        readLandmark(locations[j]);
-                    }
+                        // if a landmark if found
+                            onLandmark(locations[j]);
+
+                        }
                     }
                 }
-
             }
-
         }
-
         return rgba;
     }
 
