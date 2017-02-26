@@ -70,10 +70,10 @@ public class MarkerTracker extends Activity implements CvCameraViewListener2, Se
 
     private boolean              mIsJavaCamera = true;
     private MenuItem             mItemSwitchCamera = null;
- private Landmark[] locations = {new Landmark(213, "Elevator", "The bathroom is further down the hall", "The bathroom is further down the hall", "The bathroom is further down the hall","The bathroom is further down the hall"),
-                                    new Landmark(265, "Bathroom", "There are snacks in the common room", "There are snacks in the common room", "There are snacks in the common room", "There are snacks in the common room"),
-                                    new Landmark(341, "Hallway", "This is dangerous. Please don't go this way.", "This is dangerous. Please don't go this way.", "This is dangerous. Please don't go this way.", "This is dangerous. Please don't go this way."),
-                                    new Landmark(303, "Food", "You have arrived at food", "You have arrived at food", "You have arrived at food", "You have arrived at food")};
+  private Landmark[] locations = {new Landmark(213, "Bedroom", "The bedroom is further down the hall. It's the last door on the left.", "The bedroom is further down the hall. It's the last door on the left.", "The bedroom is further down the hall. It's the last door on the left.","The bedroom is further down the hall. It's the last door on the left."),
+            new Landmark(341, "Kitchen", "There are snacks in the kitchen if you go straight through the family room", "There are snacks in the kitchen if you go stright through the family room", "There are snacks in the kitchen if you go stright through the family room", "There are snacks in the kitchen if you go stright through the family room"),
+            new Landmark(265, "Bathroom", "The bathroom is around the corner." , "The bathroom is around the corner.", "The bathroom is around the corner.", "The bathroom is around the corner."),
+            new Landmark(303, "ELectrical Room", "You should not enter this room", "You should not enter this room", "You should not enter this room", "You should not enter this room")};
 
 
 
@@ -202,8 +202,8 @@ public class MarkerTracker extends Activity implements CvCameraViewListener2, Se
 
 
         if(loc.getId() == 303) {
-            callNumber("tel:1-513-237-8467");
-            //callNumber("tel:1-952-649-1637");
+            //callNumber("tel:1-513-237-8467");
+            callNumber("tel:1-952-649-1637");
         }
 
 
