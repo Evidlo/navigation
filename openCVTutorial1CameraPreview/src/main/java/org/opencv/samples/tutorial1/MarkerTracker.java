@@ -41,11 +41,14 @@ import java.util.Locale;
 import java.util.Vector;
 import android.content.Intent;
 import android.net.Uri;
-
+import android.widget.TextView;
+import android.os.Handler;
 
 public class MarkerTracker extends Activity implements CvCameraViewListener2, SensorEventListener {
 
     TextToSpeech tts;
+    TextView txtView;
+    String newText = "Last Known Location: ";
 
     //Constants
     private static final String TAG = "Aruco";
@@ -117,10 +120,14 @@ public class MarkerTracker extends Activity implements CvCameraViewListener2, Se
     public void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "called onCreate");
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.tutorial1_surface_view);
 
         mSensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
         mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         mMagnetometer = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+
+        txtView = (TextView)findViewById(R.id.textView);
+        txtView.setText((CharSequence)"Last Known Location: ");
 
         tts = new TextToSpeech(MarkerTracker.this, new TextToSpeech.OnInitListener() {
 
@@ -147,8 +154,6 @@ public class MarkerTracker extends Activity implements CvCameraViewListener2, Se
 
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-
-        setContentView(R.layout.tutorial1_surface_view);
 
         mOpenCvCameraView = (CameraBridgeViewBase) findViewById(R.id.tutorial1_activity_java_surface_view);
 
@@ -204,8 +209,15 @@ public class MarkerTracker extends Activity implements CvCameraViewListener2, Se
         if(loc.getId() == 303) {
             //callNumber("tel:1-513-237-8467");
             callNumber("tel:1-952-649-1637");
+        } else if (loc.getId() == 213) {
+            newText = "Last Known Location: Bedroom";
+        } else if (loc.getId() == 341) {
+            newText = "Last Known Location: Kitchen";
+        } else {
+            newText = "Last Known Location: Bathroom";
         }
 
+        threadHandler.post(updateRunnable);
 
         String Name = loc.getName();
         String message;
@@ -223,6 +235,7 @@ public class MarkerTracker extends Activity implements CvCameraViewListener2, Se
             }
 
             ConvertTextToSpeech(message);
+
         }
 
         // rate limit landmark detection
@@ -236,11 +249,21 @@ public class MarkerTracker extends Activity implements CvCameraViewListener2, Se
             }
         };
         timer_running = true;
-        timer.schedule(timer_task, 5000);
+        timer.schedule(timer_task, 3000);
 
 
 
     }
+
+    private Handler threadHandler = new Handler();
+
+    final Runnable updateRunnable = new Runnable() {
+        public void run() {
+            txtView.setText(newText);
+        }
+    };
+
+
     public Mat onCameraFrame(CvCameraViewFrame inputFrame) {
         //Convert input to rgba
         Mat rgba = inputFrame.rgba();
@@ -259,6 +282,7 @@ public class MarkerTracker extends Activity implements CvCameraViewListener2, Se
             for (int i = 0; i < detectedMarkers.size(); i++) {
                 Marker marker = detectedMarkers.get(i);
                 detectedMarkers.get(i).draw3dAxis(rgba, camParams, new Scalar(0,0,0));
+                //detectedMarkers.get(i).drawDetectedMarkers(imageCopy, corners, ids);
 
                 if (SHOW_MARKERID) {
                     //Setup

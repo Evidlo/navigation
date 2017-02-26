@@ -3,12 +3,75 @@
 
     <item
         is-multidex="true"
+        jar="/Users/cheyenne/Documents/Semester_7/Hackathon/navigation/openCVTutorial1CameraPreview/build/intermediates/exploded-aar/com.android.support/support-v4/23.4.0/jars/libs/internal_impl-23.4.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.3"
+        sha1="ea3c07504d2c8f4b13aa17c45c1b68ed9c1c3674">
+        <dex dex="/Users/cheyenne/Documents/Semester_7/Hackathon/navigation/openCVTutorial1CameraPreview/build/intermediates/transforms/dex/debug/folders/1000/10/internal_impl-23.4.0_f73461ecf86853cb6228aefeb31ce013555ba8fe/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/cheyenne/Documents/Semester_7/Hackathon/navigation/openCVTutorial1CameraPreview/build/intermediates/exploded-aar/com.android.support/support-vector-drawable/23.4.0/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.3"
+        sha1="c2c594cace5d83a3227b2b6e658ecbfd586d3ed9">
+        <dex dex="/Users/cheyenne/Documents/Semester_7/Hackathon/navigation/openCVTutorial1CameraPreview/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-vector-drawable-23.4.0_9573971a7ac42d11bfe9c5e8a94adfa84f6ed14a/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/cheyenne/Documents/Semester_7/Hackathon/navigation/openCVTutorial1CameraPreview/build/intermediates/exploded-aar/com.android.support/animated-vector-drawable/23.4.0/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.3"
+        sha1="de4db3785756bfb0915a9f59a9b3f2fea7407be4">
+        <dex dex="/Users/cheyenne/Documents/Semester_7/Hackathon/navigation/openCVTutorial1CameraPreview/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-animated-vector-drawable-23.4.0_dd881a3c73477046769cf19105bf00828c762874/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/cheyenne/Documents/Semester_7/Hackathon/navigation/openCVTutorial1CameraPreview/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.4.0/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.3"
+        sha1="548f06de403a9409f00554b3ee12a9fdea0e236c">
+        <dex dex="/Users/cheyenne/Documents/Semester_7/Hackathon/navigation/openCVTutorial1CameraPreview/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-appcompat-v7-23.4.0_c940f569cd2b215b1879451d991daf91aa5e54b3/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/cheyenne/Documents/Semester_7/Hackathon/navigation/openCVTutorial1CameraPreview/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.3"
+        sha1="512312b2aa11919b0c1e115a09db58973c7274f1">
+        <dex dex="/Users/cheyenne/Documents/Semester_7/Hackathon/navigation/openCVTutorial1CameraPreview/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_1497d5352f6191559b0626eb7cf7ed5ce0f55e83/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/cheyenne/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/23.4.0/support-annotations-23.4.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.3"
+        sha1="ffbe55fdb2bb456b1485831706a9eac3300bb6b8">
+        <dex dex="/Users/cheyenne/Documents/Semester_7/Hackathon/navigation/openCVTutorial1CameraPreview/build/intermediates/transforms/dex/debug/folders/1000/10/support-annotations-23.4.0_38faddf7c63683f99110d7d181c6082263c6c2be/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
         jar="/Users/cheyenne/Documents/Semester_7/Hackathon/navigation/openCVTutorial1CameraPreview/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
         jumboMode="true"
         optimize="true"
         revision="23.0.3"
-        sha1="03159e107746513d6e25f45449eae6c191d43d6d">
+        sha1="e24afb7508430e8aa75c7954017c7b3c3a102009">
         <dex dex="/Users/cheyenne/Documents/Semester_7/Hackathon/navigation/openCVTutorial1CameraPreview/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_345a12ca541842295419a732ccef48e0773526d7/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/cheyenne/Documents/Semester_7/Hackathon/navigation/openCVTutorial1CameraPreview/build/intermediates/exploded-aar/com.android.support/support-v4/23.4.0/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.3"
+        sha1="67bd36ee9340ec7c254108936ad16b24bed160cc">
+        <dex dex="/Users/cheyenne/Documents/Semester_7/Hackathon/navigation/openCVTutorial1CameraPreview/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-v4-23.4.0_d6647579ece05c45af76418cdc2d85450cdcca4d/classes.dex" />
     </item>
 
 </items>
