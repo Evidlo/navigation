@@ -11,9 +11,9 @@ public class Map {
         elements = inputs;
     }
 
-    public Landmark findGivenID(int ID){
+    public Landmark findGivenID(int Id){
         for(int i = 0; i < elements.length; i++) {
-            if (ID == elements[i].getLandmarkID()) {
+            if (Id == elements[i].getId()) {
                 return elements[i];
             }
         }

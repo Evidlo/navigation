@@ -66,12 +66,10 @@ public class MarkerTracker extends Activity implements CvCameraViewListener2 {
     private CameraBridgeViewBase mOpenCvCameraView;
     private boolean              mIsJavaCamera = true;
     private MenuItem             mItemSwitchCamera = null;
-    private Landmark[] locations = {new Landmark(213, "1", "First Checkpoint", 1, 1, 1),
-                                    new Landmark(265, "2", "Second Checkpoint", 1, 2, 1),
-                                    new Landmark(341, "3", "Third Checkpoint", 2, 1, 1),
-                                    new Landmark(303, "4", "Fourth Checkpoint", 2, 2, 1)};
-
-    private Map field = new Map(locations);
+    private Landmark[] locations = {new Landmark(213, "Kitchen", "go down the hallway and turn right to get to the bathroom", "testing", "Testing","oijij"),
+                                    new Landmark(265, "Bathroom", "gorbachev bleep boop", "hihihi", "nonon", "dont go that way"),
+                                    new Landmark(341, "Garage", "this way leads to certain death", "donuts are here", "run away", "doggo"),
+                                    new Landmark(303, "Bedroom", "meepmorp", "wejfijef", "123123", "lkjlkj")};
 
     private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
@@ -180,34 +178,22 @@ public class MarkerTracker extends Activity implements CvCameraViewListener2 {
 
     public void onLandmark(Landmark loc){
 
-        String leftright;
-        String updown;
-        String LocationName = loc.getLandmarkName();
-        String LocationDescription = loc.getLandmarkDescription();
+        String Name = loc.getName();
+        String message;
 
-        int[] vel = field.getDirections(loc, field.getClosest(loc));
-
-
-
+        // check which way we are facing and speak the directions
         if (onLandmark_enabled){
-            if (vel[1] > 0) {
-                updown = "down the hall";
+            if(north) {
+                message = loc.getNorthText();
+            }else if(east){
+                message = loc.getEastText();
+            }else if(west){
+                message = loc.getWestText();
             }else{
-                updown = "behind you";
-                vel[0] = vel[0]*(-1);
-
-            }
-            if (vel[0] > 0) {
-                leftright = "right";
-            }else{
-                leftright = "left";
+                message = loc.getWestText();
             }
 
-
-            String direct = "The " + field.getClosest(loc).getLandmarkName() + " is " + updown + " and to the " + leftright + ".";
-
-            ConvertTextToSpeech("You are passing the " + LocationName + ". This " + LocationDescription + ". " + direct);
-
+            ConvertTextToSpeech(message);
         }
 
         // rate limit landmark detection
