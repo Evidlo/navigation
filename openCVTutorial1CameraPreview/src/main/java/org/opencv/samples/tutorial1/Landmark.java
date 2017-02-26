@@ -6,40 +6,41 @@ package org.opencv.samples.tutorial1;
 
 
 public class Landmark {
-    int LandmarkID;
-    String LandmarkName;
-    String LandmarkDescription;
-    int xcoordinate;
-    int ycoordinate;
-    int orientation;
+    int Id;
+    String Name;
+    String NorthText;
+    String EastText;
+    String SouthText;
+    String WestText;
 
-    public Landmark(int ID, String name, String description, int x, int y, int o){
-        LandmarkID = ID;
-        LandmarkName = name;
-        LandmarkDescription = description;
-        xcoordinate = x;
-        ycoordinate = y;
-        orientation = o;
-    }
+    public Landmark(int id, String name, String north, String east, String south, String west){
+        Id = id;
+        Name = name;
+        NorthText = north;
+        EastText = east;
+        SouthText = south;
+        WestText = west;
 
-    public String getLandmarkName(){
-        return LandmarkName;
-    }
-    public String getLandmarkDescription(){
-        return LandmarkDescription;
-    }
-    public int getxcoordinate(){
-        return xcoordinate;
-    }
-    public int getLandmarkID(){
-        return LandmarkID;
-    }
-    public int getycoordinate(){
-        return ycoordinate;
-    }
-    public int getorientation(){
-        return orientation;
     }
 
+    public int getId(){
+        return Id;
+    }
+    public String getName(){
+        return Name;
+    }
+
+    public String getNorthText(){
+        return NorthText;
+    }
+    public String getEastText(){
+        return EastText;
+    }
+    public String getSouthText(){
+        return SouthText;
+    }
+    public String getWestText(){
+        return WestText;
+    }
 }
 

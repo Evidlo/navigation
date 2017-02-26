@@ -59,20 +59,19 @@ public class MarkerTracker extends Activity implements CvCameraViewListener2, Se
     public TimerTask timer_task;
     public boolean timer_running = false;
 
+    private float rotation = 0;
+
 
     //You must run a calibration prior to detection
     // The activity to run calibration is provided in the repository
     private static final String DATA_FILEPATH = "/foo2";
 
     private CameraBridgeViewBase mOpenCvCameraView;
-    private boolean mIsJavaCamera = true;
-    private MenuItem mItemSwitchCamera = null;
-    private Landmark[] locations = {new Landmark(213, "1", "First Checkpoint", 1, 1, 1),
-            new Landmark(265, "2", "Second Checkpoint", 1, 2, 1),
-            new Landmark(341, "3", "Third Checkpoint", 2, 1, 1),
-            new Landmark(303, "4", "Fourth Checkpoint", 2, 2, 1)};
+    private Landmark[] locations = {new Landmark(213, "Kitchen", "go down the hallway and turn right to get to the bathroom", "testing", "Testing","oijij"),
+                                    new Landmark(265, "Bathroom", "gorbachev bleep boop", "hihihi", "nonon", "dont go that way"),
+                                    new Landmark(341, "Garage", "this way leads to certain death", "donuts are here", "run away", "doggo"),
+                                    new Landmark(303, "Bedroom", "meepmorp", "wejfijef", "123123", "lkjlkj")};
 
-    private Map field = new Map(locations);
 
     Intent phoneintent = new Intent(Intent.ACTION_CALL);
 
@@ -81,7 +80,7 @@ public class MarkerTracker extends Activity implements CvCameraViewListener2, Se
         public void onManagerConnected(int status) {
             switch (status) {
                 case LoaderCallbackInterface.SUCCESS: {
-                    Log.i(TAG, "OpenCV loaded successfully");
+                    Log.d(TAG, "OpenCV loaded successfully");
                     mOpenCvCameraView.enableView();
                 }
                 break;
@@ -103,14 +102,14 @@ public class MarkerTracker extends Activity implements CvCameraViewListener2, Se
 
 
     public MarkerTracker() {
-        Log.i(TAG, "Instantiated new " + this.getClass());
+        Log.d(TAG, "Instantiated new " + this.getClass());
 
     }
 
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        Log.i(TAG, "called onCreate");
+        Log.d(TAG, "called onCreate");
         super.onCreate(savedInstanceState);
 
         mSensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
@@ -194,37 +193,30 @@ public class MarkerTracker extends Activity implements CvCameraViewListener2, Se
 
     public void onLandmark(Landmark loc){
 
-        String leftright;
-        String updown;
-        String LocationName = loc.getLandmarkName();
-        String LocationDescription = loc.getLandmarkDescription();
 
-        int[] vel = field.getDirections(loc, field.getClosest(loc));
 
-        if(loc.getLandmarkID() == 303) {
+        if(loc.getId() == 303) {
             callNumber("tel:1-513-237-8467");
+            //callNumber("tel:1-952-649-1637");
         }
 
 
+        String Name = loc.getName();
+        String message;
+
+        // check which way we are facing and speak the directions
         if (onLandmark_enabled){
-            if (vel[1] > 0) {
-                updown = "down the hall";
+            if((45 > rotation) & (rotation >= -45)) {
+                message = loc.getNorthText();
+            }else if((-45 > rotation) & (rotation >= -135)){
+                message = loc.getEastText();
+            }else if((-135 > rotation) | (rotation > 135)){
+                message = loc.getSouthText();
             }else{
-                updown = "behind you";
-                vel[0] = vel[0]*(-1);
-
-            }
-            if (vel[0] > 0) {
-                leftright = "right";
-            }else{
-                leftright = "left";
+                message = loc.getWestText();
             }
 
-
-            String direct = "The " + field.getClosest(loc).getLandmarkName() + " is " + updown + " and to the " + leftright + ".";
-
-            ConvertTextToSpeech("You are passing the " + LocationName + ". This " + LocationDescription + ". " + direct);
-
+            ConvertTextToSpeech(message);
         }
 
         // rate limit landmark detection
@@ -234,7 +226,6 @@ public class MarkerTracker extends Activity implements CvCameraViewListener2, Se
         }
         timer_task = new TimerTask() {
             public void run() {
-                Log.i(TAG, "sasquatch");
                 onLandmark_enabled = true;
             }
         };
@@ -281,7 +272,7 @@ public class MarkerTracker extends Activity implements CvCameraViewListener2, Se
                     Core.putText(rgba, Integer.toString(idValue), pts.get(0), Core.FONT_HERSHEY_SIMPLEX, 2, new Scalar(0,0,1));
 
                 for (int j = 0; j < locations.length ; j++) {
-                    if(detectedMarkers.get(i).getMarkerId() == locations[j].getLandmarkID()) {
+                    if(detectedMarkers.get(i).getMarkerId() == locations[j].getId()) {
                         // if a landmark if found
                             onLandmark(locations[j]);
 
@@ -336,7 +327,7 @@ public class MarkerTracker extends Activity implements CvCameraViewListener2, Se
                 float orientation[] = new float[3];
                 SensorManager.getOrientation(R, orientation);
                 azimuth = orientation[0]; // orientation contains: azimut, pitch and roll
-                float rotation = -azimuth * 360 / (2 * 3.14159f);
+                rotation = -azimuth * 360 / (2 * 3.14159f);
 
                 Log.i("compass", Float.toString(rotation));
             }
