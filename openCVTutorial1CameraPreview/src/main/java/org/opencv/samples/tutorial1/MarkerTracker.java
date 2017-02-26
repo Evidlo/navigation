@@ -10,88 +10,139 @@ import org.opencv.core.Mat;
 import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewListener2;
 import org.opencv.core.MatOfPoint2f;
-import org.opencv.core.MatOfPoint3;
 import org.opencv.core.MatOfPoint3f;
 import org.opencv.core.Point;
 import org.opencv.core.Point3;
 import org.opencv.core.Scalar;
-import org.opencv.core.Size;
 
 import es.ava.aruco.CameraParameters;
 import es.ava.aruco.MarkerDetector;
 import es.ava.aruco.Marker;
-import es.ava.aruco.Utils;
 
 import android.Manifest;
 import android.app.Activity;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Environment;
+import java.util.TimerTask;
+import java.util.Timer;
+import android.speech.tts.TextToSpeech;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SurfaceView;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Vector;
+import android.content.Intent;
+import android.net.Uri;
 
-public class MarkerTracker extends Activity implements CvCameraViewListener2 {
+
+public class MarkerTracker extends Activity implements CvCameraViewListener2, SensorEventListener {
+
+    TextToSpeech tts;
 
     //Constants
     private static final String TAG = "Aruco";
     private static final float MARKER_SIZE = (float) 0.2;
+    private boolean onLandmark_enabled = true;
 
     //Preferences
     private static final boolean SHOW_MARKERID = true;
+
+    public Timer timer = new Timer();
+    public TimerTask timer_task;
+    public boolean timer_running = false;
+
+    private float rotation = 0;
+
 
     //You must run a calibration prior to detection
     // The activity to run calibration is provided in the repository
     private static final String DATA_FILEPATH = "/foo2";
 
     private CameraBridgeViewBase mOpenCvCameraView;
+
     private boolean              mIsJavaCamera = true;
     private MenuItem             mItemSwitchCamera = null;
  private Landmark[] locations = {new Landmark(213, "Elevator", "The bathroom is further down the hall", "The bathroom is further down the hall", "The bathroom is further down the hall","The bathroom is further down the hall"),
-                                    new Landmark(265, "Bathroom", "There is food to left of here", "There is food to left of here", "There is food to left of here", "There is food to left of here"),
+                                    new Landmark(265, "Bathroom", "There are snacks in the common room", "There are snacks in the common room", "There are snacks in the common room", "There are snacks in the common room"),
                                     new Landmark(341, "Hallway", "This is dangerous. Please don't go this way.", "This is dangerous. Please don't go this way.", "This is dangerous. Please don't go this way.", "This is dangerous. Please don't go this way."),
                                     new Landmark(303, "Food", "You have arrived at food", "You have arrived at food", "You have arrived at food", "You have arrived at food")};
 
 
 
-    private Map field = new Map(locations);
+
+
+    Intent phoneintent = new Intent(Intent.ACTION_CALL);
 
     private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
         public void onManagerConnected(int status) {
             switch (status) {
-                case LoaderCallbackInterface.SUCCESS:
-                {
-                    Log.i(TAG, "OpenCV loaded successfully");
+                case LoaderCallbackInterface.SUCCESS: {
+                    Log.d(TAG, "OpenCV loaded successfully");
                     mOpenCvCameraView.enableView();
-                } break;
-                default:
-                {
+                }
+                break;
+                default: {
                     super.onManagerConnected(status);
-                } break;
+                }
+                break;
             }
         }
     };
 
+    public void callNumber(String number) {
+        phoneintent.setData(Uri.parse(number));
+        startActivity(phoneintent);
+
+        finish();
+        System.exit(0);
+    }
+
+
     public MarkerTracker() {
-        Log.i(TAG, "Instantiated new " + this.getClass());
+        Log.d(TAG, "Instantiated new " + this.getClass());
+
     }
 
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        Log.i(TAG, "called onCreate");
+        Log.d(TAG, "called onCreate");
         super.onCreate(savedInstanceState);
 
-        ActivityCompat.requestPermissions(MarkerTracker.this, new String[] {
+        mSensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
+        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        mMagnetometer = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+
+        tts = new TextToSpeech(MarkerTracker.this, new TextToSpeech.OnInitListener() {
+
+            @Override
+            public void onInit(int status) {
+                // TODO Auto-generated method stub
+                if (status == TextToSpeech.SUCCESS) {
+                    int result = tts.setLanguage(Locale.US);
+                    if (result == TextToSpeech.LANG_MISSING_DATA ||
+                            result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                        Log.e("error", "This Language is not supported");
+                    }
+                } else
+                    Log.e("error", "Initilization Failed!");
+            }
+        });
+
+        ActivityCompat.requestPermissions(MarkerTracker.this, new String[]{
                 Manifest.permission.CAMERA,
                 Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.CALL_PHONE,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
 
 
@@ -105,8 +156,6 @@ public class MarkerTracker extends Activity implements CvCameraViewListener2 {
 
         mOpenCvCameraView.setCvCameraViewListener(this);
 
-
-
     }
 
     @Override
@@ -115,6 +164,8 @@ public class MarkerTracker extends Activity implements CvCameraViewListener2 {
         super.onPause();
         if (mOpenCvCameraView != null)
             mOpenCvCameraView.disableView();
+        mSensorManager.unregisterListener(this);
+
     }
 
     @Override
@@ -128,6 +179,10 @@ public class MarkerTracker extends Activity implements CvCameraViewListener2 {
             Log.d(TAG, "OpenCV library found inside package. Using it!");
             mLoaderCallback.onManagerConnected(LoaderCallbackInterface.SUCCESS);
         }
+        mSensorManager.registerListener(this, mAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+        mSensorManager.registerListener(this, mMagnetometer, SensorManager.SENSOR_DELAY_UI);
+
+
     }
 
     public void onDestroy() {
@@ -142,32 +197,47 @@ public class MarkerTracker extends Activity implements CvCameraViewListener2 {
     public void onCameraViewStopped() {
     }
 
-    public String readLandmark(Landmark loc){
+    public void onLandmark(Landmark loc){
 
-        String leftright;
-        String updown;
-        String LocationName = loc.getLandmarkName();
-        String LocationDescription = loc.getLandmarkDescription();
 
-        int[] vel = field.getDirections(loc, field.getClosest(loc));
 
-        if (vel[1] > 0) {
-            updown = "down the hall";
-        }else{
-            updown = "behind you";
-            vel[0] = vel[0]*(-1);
-
-        }
-        if (vel[0] > 0) {
-            leftright = "right";
-        }else{
-            leftright = "left";
+        if(loc.getId() == 303) {
+            callNumber("tel:1-513-237-8467");
+            //callNumber("tel:1-952-649-1637");
         }
 
 
-        String direct = "The " + field.getClosest(loc).getLandmarkName() + " is " + updown + " and to the " + leftright + ".";
+        String Name = loc.getName();
+        String message;
 
-        return("You are passing the " + LocationName + ". This " + LocationDescription + ". " + direct);
+        // check which way we are facing and speak the directions
+        if (onLandmark_enabled){
+            if((45 > rotation) & (rotation >= -45)) {
+                message = loc.getNorthText();
+            }else if((-45 > rotation) & (rotation >= -135)){
+                message = loc.getEastText();
+            }else if((-135 > rotation) | (rotation > 135)){
+                message = loc.getSouthText();
+            }else{
+                message = loc.getWestText();
+            }
+
+            ConvertTextToSpeech(message);
+        }
+
+        // rate limit landmark detection
+        onLandmark_enabled = false;
+        if (timer_running){
+            timer_task.cancel();
+        }
+        timer_task = new TimerTask() {
+            public void run() {
+                onLandmark_enabled = true;
+            }
+        };
+        timer_running = true;
+        timer.schedule(timer_task, 5000);
+
 
 
     }
@@ -204,20 +274,69 @@ public class MarkerTracker extends Activity implements CvCameraViewListener2 {
                     List<Point> pts = new Vector<>();
                     pts = outputPoints.toList();
 
-                    //Draw id number
+                    // Draw id number
                     Core.putText(rgba, Integer.toString(idValue), pts.get(0), Core.FONT_HERSHEY_SIMPLEX, 2, new Scalar(0,0,1));
 
                 for (int j = 0; j < locations.length ; j++) {
-                    if(detectedMarkers.get(i).getMarkerId() == locations[j].getLandmarkID()) {
-                        Core.putText(rgba, readLandmark(locations[j]), pts.get(0), Core.FONT_HERSHEY_SIMPLEX, 2, new Scalar(0, 0, 1));
-                    }
+                    if(detectedMarkers.get(i).getMarkerId() == locations[j].getId()) {
+                        // if a landmark if found
+                            onLandmark(locations[j]);
+
+                        }
                     }
                 }
-
             }
+        }
+        return rgba;
+    }
 
+    private void ConvertTextToSpeech(String text) {
+        // TODO Auto-generated method stub
+        //text = et.getText().toString();
+        if(text == null||"".equals(text))
+        {
+            text = "Content not available";
+            tts.speak(text, TextToSpeech.QUEUE_FLUSH, null);
+        }else
+            tts.speak(text, TextToSpeech.QUEUE_FLUSH, null);
+    }
+
+    private SensorManager mSensorManager;
+    private Sensor mAccelerometer;
+    private Sensor mMagnetometer;
+
+
+    float azimuth = 0;
+
+    public float getDirection() {return azimuth; }
+
+
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+    }
+
+    float[] mGravity;
+    float[] mGeomagnetic;
+    public void onSensorChanged(SensorEvent event) {
+        if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER){
+            mGravity = event.values;
         }
 
-        return rgba;
+        if (event.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD){
+            mGeomagnetic = event.values;
+
+        }
+        if (mGravity != null && mGeomagnetic != null) {
+            float R[] = new float[9];
+            float I[] = new float[9];
+            boolean success = SensorManager.getRotationMatrix(R, I, mGravity, mGeomagnetic);
+            if (success) {
+                float orientation[] = new float[3];
+                SensorManager.getOrientation(R, orientation);
+                azimuth = orientation[0]; // orientation contains: azimut, pitch and roll
+                rotation = -azimuth * 360 / (2 * 3.14159f);
+
+                Log.i("compass", Float.toString(rotation));
+            }
+        }
     }
 }
