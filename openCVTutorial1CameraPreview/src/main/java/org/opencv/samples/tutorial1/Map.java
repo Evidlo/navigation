@@ -17,6 +17,7 @@ public class Map {
                 return elements[i];
             }
         }
+        return(new Landmark(1, "Error", "Error ", 0,0,0));
 
     }
 
@@ -34,7 +35,7 @@ public class Map {
 // finds the smallest distance
     public Landmark getClosest(Landmark current){
         int closeval = 0;
-        Landmark closest = new Landmark();
+        Landmark closest = new Landmark(1, "Error", "Error ", 0,0,0);
         for(int i = 0; i < elements.length; i++){
             if(findDistance(current, elements[i]) <= closeval && findDistance(current, elements[i]) != 0){
                 closest = elements[i];

@@ -44,7 +44,7 @@ public class MarkerTracker extends Activity implements CvCameraViewListener2 {
     private static final float MARKER_SIZE = (float) 0.2;
 
     //Preferences
-    private static final boolean SHOW_MARKERID = false;
+    private static final boolean SHOW_MARKERID = true;
 
     //You must run a calibration prior to detection
     // The activity to run calibration is provided in the repository
@@ -53,6 +53,12 @@ public class MarkerTracker extends Activity implements CvCameraViewListener2 {
     private CameraBridgeViewBase mOpenCvCameraView;
     private boolean              mIsJavaCamera = true;
     private MenuItem             mItemSwitchCamera = null;
+    private Landmark[] locations = {new Landmark(213, "1", "First Checkpoint", 1, 1, 1),
+                                    new Landmark(265, "2", "Second Checkpoint", 1, 2, 1),
+                                    new Landmark(341, "3", "Third Checkpoint", 2, 1, 1),
+                                    new Landmark(303, "4", "Fourth Checkpoint", 2, 2, 1)};
+
+    private Map field = new Map(locations);
 
     private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
@@ -96,6 +102,9 @@ public class MarkerTracker extends Activity implements CvCameraViewListener2 {
         mOpenCvCameraView.setVisibility(SurfaceView.VISIBLE);
 
         mOpenCvCameraView.setCvCameraViewListener(this);
+
+
+
     }
 
     @Override
@@ -131,6 +140,35 @@ public class MarkerTracker extends Activity implements CvCameraViewListener2 {
     public void onCameraViewStopped() {
     }
 
+    public String readLandmark(Landmark loc){
+
+        String leftright;
+        String updown;
+        String LocationName = loc.getLandmarkName();
+        String LocationDescription = loc.getLandmarkDescription();
+
+        int[] vel = field.getDirections(loc, field.getClosest(loc));
+
+        if (vel[1] > 0) {
+            updown = "down the hall";
+        }else{
+            updown = "behind you";
+            vel[0] = vel[0]*(-1);
+
+        }
+        if (vel[0] > 0) {
+            leftright = "right";
+        }else{
+            leftright = "left";
+        }
+
+
+        String direct = "The " + field.getClosest(loc).getLandmarkName() + " is " + updown + " and to the " + leftright + ".";
+
+        return("You are passing the " + LocationName + ". This " + LocationDescription + ". " + direct);
+
+
+    }
     public Mat onCameraFrame(CvCameraViewFrame inputFrame) {
         //Convert input to rgba
         Mat rgba = inputFrame.rgba();
@@ -166,8 +204,16 @@ public class MarkerTracker extends Activity implements CvCameraViewListener2 {
 
                     //Draw id number
                     Core.putText(rgba, Integer.toString(idValue), pts.get(0), Core.FONT_HERSHEY_SIMPLEX, 2, new Scalar(0,0,1));
+
+                for (int j = 0; j < locations.length ; j++) {
+                    if(detectedMarkers.get(i).getMarkerId() == locations[j].getLandmarkID()) {
+                        Core.putText(rgba, readLandmark(locations[j]), pts.get(0), Core.FONT_HERSHEY_SIMPLEX, 2, new Scalar(0, 0, 1));
+                    }
+                    }
                 }
+
             }
+
         }
 
         return rgba;
