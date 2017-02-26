@@ -53,10 +53,12 @@ public class MarkerTracker extends Activity implements CvCameraViewListener2 {
     private CameraBridgeViewBase mOpenCvCameraView;
     private boolean              mIsJavaCamera = true;
     private MenuItem             mItemSwitchCamera = null;
-    private Landmark[] locations = {new Landmark(213, "1", "First Checkpoint", 1, 1, 1),
-                                    new Landmark(265, "2", "Second Checkpoint", 1, 2, 1),
-                                    new Landmark(341, "3", "Third Checkpoint", 2, 1, 1),
-                                    new Landmark(303, "4", "Fourth Checkpoint", 2, 2, 1)};
+ private Landmark[] locations = {new Landmark(213, "Elevator", "The bathroom is further down the hall", "The bathroom is further down the hall", "The bathroom is further down the hall","The bathroom is further down the hall"),
+                                    new Landmark(265, "Bathroom", "There is food to left of here", "There is food to left of here", "There is food to left of here", "There is food to left of here"),
+                                    new Landmark(341, "Hallway", "This is dangerous. Please don't go this way.", "This is dangerous. Please don't go this way.", "This is dangerous. Please don't go this way.", "This is dangerous. Please don't go this way."),
+                                    new Landmark(303, "Food", "You have arrived at food", "You have arrived at food", "You have arrived at food", "You have arrived at food")};
+
+
 
     private Map field = new Map(locations);
 
