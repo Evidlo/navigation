@@ -1,4 +1,4 @@
-# HackIllinois Navigational Aid
+# MARCO | HackIllinois 2017
 
 Before running the first time, edit `openCVTutorial1CameraPreview/src/main/AndroidManifest.xml`
         <activity android:name=".MarkerTracker"
